@@ -139,6 +139,7 @@ sub parse_specification {
     my ($self, $ctx) = @_;
 
     $self->parse_namespace_specification($ctx);
+    $self->parse_version_specification($ctx);
     $self->parse_option_specification($ctx);
 
     return;
@@ -147,6 +148,11 @@ sub parse_specification {
 sub parse_namespace_specification {
     my ($self, $ctx) = @_;
     return scalar $ctx->strip_namespace;
+}
+
+sub parse_version_specification {
+    my ( $self, $ctx ) = @_;
+    return scalar $ctx->strip_version;
 }
 
 sub parse_option_specification {
@@ -199,6 +205,7 @@ sub parse {
     $self->parse_specification($ctx);
 
     my $name = $ctx->namespace;
+    my $version = $ctx->version;
 
     my ($package, $anon);
 
@@ -228,7 +235,7 @@ sub parse {
 
     # namespace and mx:d initialisations
     $ctx->add_preamble_code_parts(
-        "package ${package}",
+        "package ${package}" . ( defined $version ? ' ' . $version->stringify : '' ),
         sprintf(
             "use %s %s => '%s', file => __FILE__, stack => [ %s ]",
             $ctx->provided_by,
