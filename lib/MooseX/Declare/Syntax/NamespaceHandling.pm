@@ -9,6 +9,7 @@ use Carp;
 use aliased 'MooseX::Declare::Context::Namespaced';
 use aliased 'MooseX::Declare::Context::WithOptions';
 use aliased 'MooseX::Declare::Context::Parameterized';
+use aliased 'MooseX::Declare::Context::Version';
 use aliased 'MooseX::Declare::StackItem';
 
 use namespace::clean -except => 'meta';
@@ -132,7 +133,7 @@ sub add_optional_customizations  { }
 sub handle_post_parsing          { }
 sub make_anon_metaclass          { }
 
-around context_traits => sub { super, WithOptions, Namespaced };
+around context_traits => sub { super, WithOptions, Namespaced, Version };
 
 sub parse_specification {
     my ($self, $ctx) = @_;
